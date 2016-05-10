@@ -216,6 +216,9 @@
         // show week numbers at head of row
         showWeekNumber: false,
 
+        // Week picker mode
+        weekMode: false,
+
         // used internally (don't config outside)
         minYear: 0,
         maxYear: 9999,
@@ -321,9 +324,9 @@
         return '<td class="pika-week">' + weekNum + '</td>';
     },
 
-    renderRow = function(days, isRTL)
+    renderRow = function(days, isRTL, isRowSelected)
     {
-        return '<tr>' + (isRTL ? days.reverse() : days).join('') + '</tr>';
+        return '<tr' + (isRowSelected ? ' class="is-selected"' : '') + '>' + (isRTL ? days.reverse() : days).join('') + '</tr>';
     },
 
     renderBody = function(rows)
@@ -1004,6 +1007,7 @@
                 after -= 7;
             }
             cells += 7 - after;
+            var isWeekSelected = false;
             for (var i = 0, r = 0; i < cells; i++)
             {
                 var day = new Date(year, month, 1 + (i - before)),
@@ -1047,15 +1051,20 @@
                         showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths
                     };
 
+                if (opts.weekMode && isSelected) {
+                    isWeekSelected = true;
+                }
+
                 row.push(renderDay(dayConfig));
 
                 if (++r === 7) {
                     if (opts.showWeekNumber) {
                         row.unshift(renderWeek(i - before, month, year));
                     }
-                    data.push(renderRow(row, opts.isRTL));
+                    data.push(renderRow(row, opts.isRTL, isWeekSelected));
                     row = [];
                     r = 0;
+                    isWeekSelected = false;
                 }
             }
             return renderTable(opts, data);
