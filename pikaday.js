@@ -217,7 +217,7 @@
         showWeekNumber: false,
 
         // Week picker mode
-        weekMode: false,
+        pickWholeWeek: false,
 
         // used internally (don't config outside)
         minYear: 0,
@@ -324,9 +324,9 @@
         return '<td class="pika-week">' + weekNum + '</td>';
     },
 
-    renderRow = function(days, isRTL, weekMode, isRowSelected)
+    renderRow = function(days, isRTL, pickWholeWeek, isRowSelected)
     {
-        return '<tr class="pika-row ' + (weekMode ? ' week-mode' : '') + (isRowSelected ? ' is-selected' : '') + '">' + (isRTL ? days.reverse() : days).join('') + '</tr>';
+        return '<tr class="pika-row ' + (pickWholeWeek ? ' pick-whole-week' : '') + (isRowSelected ? ' is-selected' : '') + '">' + (isRTL ? days.reverse() : days).join('') + '</tr>';
     },
 
     renderBody = function(rows)
@@ -1051,7 +1051,7 @@
                         showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths
                     };
 
-                if (opts.weekMode && isSelected) {
+                if (opts.pickWholeWeek && isSelected) {
                     isWeekSelected = true;
                 }
 
@@ -1061,7 +1061,7 @@
                     if (opts.showWeekNumber) {
                         row.unshift(renderWeek(i - before, month, year));
                     }
-                    data.push(renderRow(row, opts.isRTL, opts.weekMode, isWeekSelected));
+                    data.push(renderRow(row, opts.isRTL, opts.pickWholeWeek, isWeekSelected));
                     row = [];
                     r = 0;
                     isWeekSelected = false;
